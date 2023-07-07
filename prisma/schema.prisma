@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Supplier {
+  id_supp Int @id
+  name_supp String
+  app_supp String
+  brand_supp String
+  tel_supp String
+  com_supp Float
+  product Product[]
+}
+
+model Product {
+  id_pro Int @id
+  name_pro String
+  cat_pro String
+  price_pro Float
+  barcod_pro String
+  year_pro String
+  id_supp1 Int
+  supplier Supplier @relation(fields: [id_supp1], references: [id_supp])
+  purchases Purchase[]
+  stock Stock[]
+
+}
+
+model Customer {
+  id_cus Int @id
+  name_cus String
+  app_cus String
+  add_cus String
+  mail_cus String
+  tel_cus String
+  codpos_cus String
+  rfc_cus String
+  purchases Purchase[]
+}
+
+model Employee {
+  id_emp Int @id
+  codpos_emp String
+  name_emp String
+  app_emp String
+  tel_emp String
+  sal_emp Float
+  add_emp String
+  mail_emp String
+  rfc_emp String
+  status_emp String
+  purchases Purchase[]
+}
+
+model Purchase {
+  id_pur Int @id
+  total_pur Float
+  date_pur DateTime
+  cantpor_pur Int
+  id_emp1 Int
+  id_cus1 Int
+  id_pro1 Int
+  employee Employee @relation(fields: [id_emp1], references: [id_emp])
+  customer Customer @relation(fields: [id_cus1], references: [id_cus])
+  product Product @relation(fields: [id_pro1], references: [id_pro])
+}
+
+model Store {
+  id_store Int @id
+  add_store String
+  codpo_store String
+  mail_store String
+  tel_store String
+  stock Stock[]
+}
+
+model Stock {
+  id_stock Int @id
+  cant_stock Int
+  id_pro2 Int
+  id_store1 Int
+  product Product @relation(fields: [id_pro2], references: [id_pro])
+  store Store @relation(fields: [id_store1], references: [id_store])
+}
